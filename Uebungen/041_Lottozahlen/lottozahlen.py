@@ -31,6 +31,7 @@ def validate_input(number):
     -------
     integer: if valid or bool: False if invalid input
     """
+    return 0  # Diese Zeile bitte entfernen
 #
 #
 #               HIER KOMMT IHRE LÖSUNG
@@ -46,6 +47,7 @@ def get_draw():
     -------
     List: Liste mit 7 Zufallszahlen zwischen 1 und 49, wobei jede Zahl nur einmal in der Liste vorkommen darf
     """
+    return []  # Diese Zeile bitte entfernen
 #
 #
 #               HIER KOMMT IHRE LÖSUNG
@@ -66,6 +68,7 @@ def user_input():
     -------
     list: Gibt eine Liste mit 7 Zahlen des Benutzers zurück
     """
+    return []  # Diese Zeile bitte entfernen
 #
 #
 #               HIER KOMMT IHRE LÖSUNG
@@ -81,6 +84,7 @@ def check_numbers(numbers, tip):
     -------
     List: Eine Liste mit den Übereinstimmungen aus der Ziehung und den getippten Zahlen
     '''
+    return 0  # Diese Zeile bitte entfernen
 #
 #
 #               HIER KOMMT IHRE LÖSUNG

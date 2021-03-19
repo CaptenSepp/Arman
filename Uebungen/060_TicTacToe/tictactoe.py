@@ -24,9 +24,12 @@ def createEmptyPlayground():
 
     """
     
-#BEGIN SOLUTION
-    return [' ']*9
-#END SOLUTION
+    return []  # Diese Zeile bitte entfernen
+#
+#
+#               HIER KOMMT IHRE LÖSUNG
+#
+#
 
 
 def setField(x, y, token, playground):
@@ -57,20 +60,12 @@ def setField(x, y, token, playground):
 
     """
     
-#BEGIN SOLUTION
-    if not (0<=x<=2) or not (0<=y<=2):
-        raise IndexError("x and or y out of range")
-
-    if len(token) != 1 or token not in 'ox':
-        raise ValueError("Unknown token {}".format(token))
-
-    index = x + y*3
-    if (playground[index] != " "):
-        return False
-
-    playground[index] = token
-    return True
-#END SOLUTION
+    return False  # Diese Zeile bitte entfernen
+#
+#
+#               HIER KOMMT IHRE LÖSUNG
+#
+#
 
 
 def getField(x, y, playground):
@@ -97,12 +92,12 @@ def getField(x, y, playground):
 
     """
 
-#BEGIN SOLUTION
-    if not (0<=x<=2) or not (0<=y<=2):
-        raise IndexError("x and or y out of range")
-    
-    return playground[x + y*3]
-#END SOLUTION
+    return ' '  # Diese Zeile bitte entfernen
+#
+#
+#               HIER KOMMT IHRE LÖSUNG
+#
+#
 
 
 def drawCross(centerx, centery, width, height, painter):
@@ -124,16 +119,12 @@ def drawCross(centerx, centery, width, height, painter):
     #Dies Zeichnet eine Linie zwischen den Punkten (x1,y1) und (x2,y2).
     #Die Koordinaten müssen vom Typ Integer sein.
 
-#BEGIN SOLUTION
-    left = int(centerx-width/2)
-    right = int(centerx+width/2)
-    top = int(centery-height/2)
-    bot = int(centery+height/2)
-    
-    painter.drawLine(left, top, right, bot)
-    painter.drawLine(left, bot, right, top)
+#
+#
+#               HIER KOMMT IHRE LÖSUNG
+#
+#
 
-#END SOLUTION
 def drawCircle(centerx, centery, width, height, painter):
     """
     Zeichnet eine Ellipse in das Rechteck, welches
@@ -152,12 +143,11 @@ def drawCircle(centerx, centery, width, height, painter):
     # painter.drawEllipse(x, y, w, h)
     # Dies zeichnet eine Ellipse in das Rechteck (x,y) - (x+w, y+h)
 
-#BEGIN SOLUTION
-    left = int(centerx-width/2)
-    top = int(centery-height/2)
-
-    painter.drawEllipse(left, top, int(width), int(height))
-#END SOLUTION
+#
+#
+#               HIER KOMMT IHRE LÖSUNG
+#
+#
     
 
 
@@ -180,15 +170,11 @@ def drawEmptyPlayground(width, height, painter):
     :param painter: Painter-Objekt
     :return: None
     """
-#BEGIN SOLUTION
-    for i in range(4):
-        y = int((height-1)*i/3)
-        painter.drawLine(0,y,width-1,y)
-
-    for i in range(4):
-        x = int((width-1)*i/3)
-        painter.drawLine(x,0,x,height-1)
-#END SOLUTION
+#
+#
+#               HIER KOMMT IHRE LÖSUNG
+#
+#
 
 
 def drawToken(token, centerx, centery, token_width, token_height, painter, window):
@@ -211,20 +197,11 @@ def drawToken(token, centerx, centery, token_width, token_height, painter, windo
     :param window:  Winows Objekt (Hier sind z. B. die Stiftfarben gespeichert)
     :return: None
     """
-#BEGIN SOLUTION
-    if token == ' ':
-        return
-
-    if token not in 'xo':
-        raise ValueError("Unknown token")
-
-    if token == 'x':
-        painter.setPen(window.redPen);
-        drawCross(centerx, centery, token_width, token_height, painter)
-    elif token == 'o':
-        painter.setPen(window.greenPen);
-        drawCircle(centerx, centery, token_width, token_height, painter)
-#END SOLUTION
+#
+#
+#               HIER KOMMT IHRE LÖSUNG
+#
+#
 
 
 def repaint(width, height, painter, window):
@@ -250,19 +227,11 @@ def repaint(width, height, painter, window):
     :return:
     """
 
-#BEGIN SOLUTION
-    painter.setPen(window.thickBlackPen)
-    drawEmptyPlayground(width, height, painter)
-
-    field_width = (width-1) / 3
-    field_height = (height-1) / 3
-
-    for ix, iy in product(range(3), range(3)):
-        centerx = field_width * (ix + .5)
-        centery = field_height * (iy + .5)
-        token = getField(ix, iy, Spielfeld)
-        drawToken(token, centerx, centery, 0.9*field_width, 0.9*field_height, painter, window)
-#END SOLUTION
+#
+#
+#               HIER KOMMT IHRE LÖSUNG
+#
+#
 
 def unentschieden(field):
     '''
@@ -274,15 +243,12 @@ def unentschieden(field):
         False: Nicht unentschieden
     '''
 
-#BEGIN SOLUTION
-    count = 0
-    for ix, iy in product(range(3), range(3)):
-        token = getField(ix, iy, field)
-        if token == ' ':
-            count = count + 1
-
-    return count == 0
-#END SOLUTION
+    return False  # Diese Zeile bitte entfernen
+#
+#
+#               HIER KOMMT IHRE LÖSUNG
+#
+#
 
 def gewinner(field):
     '''
@@ -295,21 +261,11 @@ def gewinner(field):
         None: niemand hat gewonnen
     '''
 
-#BEGIN SOLUTION
-    winconstellations = list()
-    for i in range(3):
-        winconstellations.append( [(i, j) for j in range(3)] )
-        winconstellations.append( [(j, i) for j in range(3)] )
-    winconstellations.append([(j, j) for j in range(3)])
-    winconstellations.append([(2-j, j) for j in range(3)])
-
-    for wincon in winconstellations:
-        tokens = ''.join([getField(x,y,field) for x,y in wincon])
-        if tokens != 3*" " and tokens[0]*3 == tokens:
-            return tokens[0]
-
-    return None
-#END SOLUTION
+#
+#
+#               HIER KOMMT IHRE LÖSUNG
+#
+#
 
 def mapMouseToField(mousex, mousey, width, height):
     '''
@@ -322,19 +278,20 @@ def mapMouseToField(mousex, mousey, width, height):
     :param height:  Höhe des gesamten Spielfeldes
     :return: ix, iy als integer
     '''
-#BEGIN SOLUTION
-    ix = int( mousex / (width/3) )
-    iy = int( mousey / (height/3) )
-    return ix, iy
-#END SOLUTION
+    return 0, 0  # Diese Zeile bitte entfernen
+#
+#
+#               HIER KOMMT IHRE LÖSUNG
+#
+#
 
-###################
-###################
-###################
+#########################################################
+#########################################################
+#########################################################
 #         AB HIER NICHTS MEHR ÄNDERN
-###################
-###################
-###################
+#########################################################
+#########################################################
+#########################################################
 
 Spielfeld = None
 tokens = "xo"

@@ -28,6 +28,7 @@ class Creator:
             t = [0, 0.1, 0.2, ..., 0.9]
             y sind dann die enstprechenden Funktionswerte f(t)
         '''
+        return 0, 0  # Diese Zeile bitte entfernen
 #
 #
 #               HIER KOMMT IHRE LÖSUNG
@@ -97,6 +98,7 @@ class Analyzer:
         :return:
         t, y
         '''
+        return 0, 0  # Diese Zeile bitte entfernen
 #
 #
 #               HIER KOMMT IHRE LÖSUNG
@@ -132,6 +134,7 @@ class Analyzer:
         f: Vektor mit f_k
         c: Vector mit c_k
         '''
+        return [0]*10, [0]*10  # Diese Zeile bitte entfernen
 #
 #
 #               HIER KOMMT IHRE LÖSUNG

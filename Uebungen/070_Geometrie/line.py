@@ -23,6 +23,7 @@ class Line:
         :return: p1,p2
         """
 
+        return 0, 0  # Diese Zeile bitte entfernen
 #
 #
 #               HIER KOMMT IHRE LÖSUNG
@@ -35,6 +36,7 @@ class Line:
 
         :return: Länge der Linie
         """
+        return 0  # Diese Zeile bitte entfernen
 #
 #
 #               HIER KOMMT IHRE LÖSUNG
@@ -59,6 +61,7 @@ class Line:
         :return: Winkel in Grad von 0 bis 359.999999...
         """
 
+        return 0  # Diese Zeile bitte entfernen
 #
 #
 #               HIER KOMMT IHRE LÖSUNG
@@ -76,6 +79,7 @@ class Line:
         Hinweise hier:https://en.wikipedia.org/wiki/Rotation_matrix
         """
 
+        return Line((0, 0), (1, 1))  # Diese Zeile bitte entfernen
 #
 #
 #               HIER KOMMT IHRE LÖSUNG

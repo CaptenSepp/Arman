@@ -17,6 +17,7 @@ class Konto:
         Gibt des aktuellen Kapitalwert des Kontos zurück.
         :return: Kapitalwert
         """
+        return 0  # Diese Zeile bitte entfernen
 #
 #
 #               HIER KOMMT IHRE LÖSUNG
@@ -45,6 +46,7 @@ class Konto:
         :param wert: Auswahlungswunsch
         :return: Wirklicher Auswahlungsbetrag
         """
+        return 0  # Diese Zeile bitte entfernen
 #
 #
 #               HIER KOMMT IHRE LÖSUNG

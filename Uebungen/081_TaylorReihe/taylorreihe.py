@@ -17,6 +17,7 @@ class SineFunction:
         :param x: Skalar oder numpy-Vektor
         :return: Wert(e) als Skalar oder numpy-Vektor
         '''
+        return 0  # Diese Zeile bitte entfernen
 #
 #
 #               HIER KOMMT IHRE LÖSUNG
@@ -29,6 +30,7 @@ class SineFunction:
         :param x: Skalar oder Numpy-Vektor
         :return: Entsprechende Werte
         '''
+        return 0  # Diese Zeile bitte entfernen
 #
 #
 #               HIER KOMMT IHRE LÖSUNG
@@ -49,6 +51,7 @@ class ExpFunction:
         pass
 
     def evalDerivitive(self, n, x):
+        return 0  # Diese Zeile bitte entfernen
 #
 #
 #               HIER KOMMT IHRE LÖSUNG
@@ -56,6 +59,7 @@ class ExpFunction:
 #
 
     def evaluate(self, x):
+        return 0  # Diese Zeile bitte entfernen
 #
 #
 #               HIER KOMMT IHRE LÖSUNG
@@ -86,6 +90,7 @@ class TaylorApproximation:
         :return: List der Koeffizienten
         Zum Beispiel steht [2, 3, 1] für das Polynom p(x) = 2 + 3x + 1x^2
         '''
+        return 0  # Diese Zeile bitte entfernen
 #
 #
 #               HIER KOMMT IHRE LÖSUNG
@@ -99,6 +104,7 @@ class TaylorApproximation:
 
         :return: Polynom vom typ np.poly1d
         '''
+        return [0]*4  # Diese Zeile bitte entfernen
 #
 #
 #               HIER KOMMT IHRE LÖSUNG
@@ -115,6 +121,7 @@ class TaylorApproximation:
         :param x: Skalar oder Vektor
         :return: Entsprechend approximierte Werte
         '''
+        return 0  # Diese Zeile bitte entfernen
 #
 #
 #               HIER KOMMT IHRE LÖSUNG
@@ -131,6 +138,7 @@ class TaylorApproximation:
 
         :return: String mit Latexdarstellung
         '''
+        return ''  # Diese Zeile bitte entfernen
 #
 #
 #               HIER KOMMT IHRE LÖSUNG

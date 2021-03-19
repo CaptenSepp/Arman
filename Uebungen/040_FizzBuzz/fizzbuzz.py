@@ -21,6 +21,7 @@ def fizzbuzzNumber(number):
     Sonst die Zahl selber als String
     """
     
+    return 0  # Diese Zeile bitte entfernen
 #
 #
 #               HIER KOMMT IHRE LÖSUNG
@@ -39,16 +40,12 @@ def run():
     Nach der letzten Zeile erfolgt ein Zeilenumbruch.
     '''
     
-    
-    data = [fizzbuzzNumber(n) for n in range(1, 101)]
-
-    result = ''    
-    while len(data) > 0:
-        result += ', '.join(data[:10])
-        result += '\n'
-        data = data[10:]
-    
-    return result
+    return ''  # Diese Zeile bitte entfernen
+#
+#
+#               HIER KOMMT IHRE LÖSUNG
+#
+#
 
     
     

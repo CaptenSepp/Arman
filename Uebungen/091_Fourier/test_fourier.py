@@ -143,7 +143,6 @@ class testAnalyzer_excel(unittest.TestCase):
         self.mut.set(Eingabedatei='testoutput.xlsx', ax1=None, ax2=None)
         exp_t, exp_y = self.mut.readData()
         #TODO: auch Serien gehen hier durch
-        syntaxfehler
         self.assertIsInstance(exp_t, np.ndarray)
         self.assertIsInstance(exp_y, np.ndarray)
 

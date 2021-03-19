@@ -3,6 +3,7 @@
 import math
 
 def berechnung(radius):
+    return 0  # Diese Zeile bitte entfernen
 #
 #
 #               HIER KOMMT IHRE LÖSUNG

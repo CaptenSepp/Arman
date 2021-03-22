@@ -6,10 +6,10 @@ import zipfile
 import globals
 from pathlib import Path
 
-from PyQt5 import QtGui
+from PyQt5 import QtGui, QtCore
 from PyQt5.QtWidgets import *
 
-
+import json
 
 PROGRAMVERSION = globals.versionstr
 
@@ -34,23 +34,50 @@ h = GuiLogger()
 h.setFormatter(logging.Formatter("[%(levelname)s] %(message)s"))
 log.addHandler(h)
 
+class ConfigAwareLineEdit(QLineEdit):
+    def __init__(self, config, name):
+        self.config = config
+        self.name = name
+        super().__init__(config.get(name, ''))
+
+    def keyPressEvent(self, e):
+        result = super().keyPressEvent(e)
+        self.config[self.name] = self.text()
+        return result
+
+class ConfigAwareCheckBox(QCheckBox):
+    def __init__(self, label, config, name):
+        super().__init__(label)
+        self.config = config
+        self.name = name
+        self.setChecked(self.config.get('komptest', False))
+        self.stateChanged.connect(self.change)
+
+    def change(self, state):
+        self.config[self.name] = (state == 2)
+
 
 class App(QFrame):
+    CONFIGFILENAME = 'config.json'
     def __init__(self):
+        basedir = os.path.dirname(os.path.realpath(__file__))
+        self.CONFIGFILENAME = os.path.join(basedir, self.CONFIGFILENAME)
         super().__init__()
-        self.eb_akennung = QLineEdit('')
-        self.eb_uid = QLineEdit('')
-        self.pb_Abgabe = QPushButton('Abgabe')
-        self.pb_Abgabe.clicked.connect(self.abgabe)
-        self.pb_Test = QPushButton('Test')
-        self.pb_Test.clicked.connect(self.runTests)
-
         self.logWidget = QTextEdit()
         self.logWidget.setFontFamily("Courier New")
         self.logWidget.setLineWrapMode(0)
 
         h.logWidget = self.logWidget
         log.info("Programmstart")
+        self.readConfigFile()
+
+        self.eb_akennung = ConfigAwareLineEdit(self.config, 'akennung')
+        self.eb_uid = ConfigAwareLineEdit(self.config, 'matrikelnummer')
+        self.pb_Abgabe = QPushButton('Abgabe')
+        self.pb_Abgabe.clicked.connect(self.abgabe)
+        self.pb_Test = QPushButton('Test')
+        self.pb_Test.clicked.connect(self.runTests)
+
 
         layout = QGridLayout()
         templayout = QVBoxLayout()
@@ -73,8 +100,7 @@ class App(QFrame):
 
 
         templayout = QVBoxLayout()
-        self.cb_SelectCompressedReport = QCheckBox("Komprimierte Darstellung der Testausgabe")
-        self.cb_SelectCompressedReport.setChecked(True)
+        self.cb_SelectCompressedReport = ConfigAwareCheckBox("Komprimierte Darstellung der Testausgabe", self.config, 'komptest')
         templayout.addWidget(self.cb_SelectCompressedReport)
         layout.addItem(templayout, 3, 1, columnSpan=2)
 
@@ -89,7 +115,28 @@ class App(QFrame):
         self.setWindowIcon(QtGui.QIcon('icon.png'))
         #        self.setFixedSize(400, 200)
         self.resize(800, 600)
+
         self.show()
+
+    def closeEvent(self, *args, **kwargs):
+        self.writeConfigFile()
+        return super().closeEvent(*args, **kwargs)
+    def writeConfigFile(self):
+        log.info("Schreibe Konfiguration in die Datei {}".format(self.CONFIGFILENAME))
+        print("Schreibe Konfiguration in die Datei {}".format(self.CONFIGFILENAME))
+        with open(self.CONFIGFILENAME, 'w') as fp:
+            json.dump(self.config, fp)
+            print(json.dumps(self.config))
+
+    def readConfigFile(self):
+        if not os.path.isfile(self.CONFIGFILENAME):
+            log.info("Konfigurationsdatei {} existiert nicht. Erstelle leere Konfiguration".format(self.CONFIGFILENAME))
+            self.config = {}
+            return
+
+        log.info("Lese Konfiguration aus der Datei {}".format(self.CONFIGFILENAME))
+        with open(self.CONFIGFILENAME) as fp:
+            self.config = json.load(fp)
 
 
     def runTests(self):

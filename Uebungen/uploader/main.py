@@ -16,7 +16,9 @@ PROGRAMVERSION = globals.versionstr
 class GuiLogger(logging.Handler):
     def emit(self, record):
         datestr = datetime.datetime.now().strftime("%d.%m.%Y %H:%M:%S")
-
+        if record.msg is None:
+            QApplication.processEvents()
+            return
         if record.levelname == "ERROR":
             msg = '<span style="color:red;">{}</span>'.format(self.format(record))
         else:
@@ -25,6 +27,7 @@ class GuiLogger(logging.Handler):
         html = '<span style="font-family: Courier New"> <b>{}</b> {} </span> <br>'.format(datestr, msg)
         self.logWidget.moveCursor(QtGui.QTextCursor.End, QtGui.QTextCursor.MoveAnchor)
         self.logWidget.textCursor().insertHtml(html)
+        QApplication.processEvents()
 
 
 log = logging.getLogger(__name__)
@@ -68,7 +71,7 @@ class App(QFrame):
         self.logWidget.setLineWrapMode(0)
 
         h.logWidget = self.logWidget
-        log.info("Programmstart")
+        self.testPythonVersion()
         self.readConfigFile()
 
         self.eb_akennung = ConfigAwareLineEdit(self.config, 'akennung')
@@ -116,17 +119,26 @@ class App(QFrame):
         #        self.setFixedSize(400, 200)
         self.resize(800, 600)
 
+
         self.show()
+
+    def testPythonVersion(self):
+        minor = sys.version_info.minor
+        major = sys.version_info.major
+
+        log.info("Python-Version: {}.{}".format(major, minor))
+
+        if not (major == 3 and minor >= 9):
+            log.error("Achtung!!! Dieses Programm erfordert wenigstens Python-Version 3.9 !!!")
+
 
     def closeEvent(self, *args, **kwargs):
         self.writeConfigFile()
         return super().closeEvent(*args, **kwargs)
     def writeConfigFile(self):
         log.info("Schreibe Konfiguration in die Datei {}".format(self.CONFIGFILENAME))
-        print("Schreibe Konfiguration in die Datei {}".format(self.CONFIGFILENAME))
         with open(self.CONFIGFILENAME, 'w') as fp:
             json.dump(self.config, fp)
-            print(json.dumps(self.config))
 
     def readConfigFile(self):
         if not os.path.isfile(self.CONFIGFILENAME):

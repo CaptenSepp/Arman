@@ -1,10 +1,12 @@
-import unittest
-from pathlib import Path
-import pandas as pd
 import logging
 import sys
+import unittest
+from pathlib import Path
+
+import pandas as pd
 
 log = logging.getLogger(__name__)
+log.setLevel(logging.INFO)
 
 
 class TabularTestResult(unittest.TestResult):
@@ -23,12 +25,15 @@ class TabularTestResult(unittest.TestResult):
 
         methodname = test._testMethodName
         aufgabe = test.__class__.__module__.split('.')[0]
-        self.result.append({'Aufgabe': aufgabe, 'test': methodname, 'StatusText':'Failed', 'Punkte': 0, 'Maxpunkte': 1, 'Gewichtung': Gewichtung})
+        if aufgabe == 'unittest':
+            aufgabe = methodname
+        self.result.append({'Aufgabe': aufgabe, 'test': methodname, 'StatusText': 'Failed', 'Punkte': 0, 'Maxpunkte': 1,
+                            'Gewichtung': Gewichtung})
 
     def addError(self, test, err):
         log.error("Fehler im Modul {}".format(test))
         self.result[-1]['StatusText'] = 'ERROR'
-        
+
     def addSuccess(self, test):
         super().addSuccess(test)
         self.result[-1]['Punkte'] = 1
@@ -40,7 +45,6 @@ class TabularTestResult(unittest.TestResult):
             self.result[-1]['StatusText'] = test.UploaderHint
         except:
             pass
-
 
     def toDataframe(self):
         df = pd.DataFrame(self.result)
@@ -98,10 +102,10 @@ class TabularTestResult(unittest.TestResult):
         if StatusText == 'ERROR':
             bkcolor = 'red'
 
-        tableRow = rowTemplate(aufgabe = dfRow['Aufgabe'],
-                               testmethode = dfRow.get('test', ''),
-                               punkte = Punkte, maxpunkte = Maxpunkte,
-                               statustext = StatusText, bkcolor=bkcolor)
+        tableRow = rowTemplate(aufgabe=dfRow['Aufgabe'],
+                               testmethode=dfRow.get('test', ''),
+                               punkte=Punkte, maxpunkte=Maxpunkte,
+                               statustext=StatusText, bkcolor=bkcolor)
         tableRows.append(tableRow)
 
     def __str__(self):
@@ -109,24 +113,85 @@ class TabularTestResult(unittest.TestResult):
         df = df.groupby('Aufgabe').sum()
         return df.to_string()
 
-def runTest(basepath, compressedReport):
+
+import multiprocessing as mp
+
+
+def RunTestDirInThread(basepath, subpath):
+    stdout = sys.stdout
+    stderr = sys.stderr
+    sys.stdout = None
+    sys.stderr = None
 
     result = TabularTestResult()
+    log.info("Run Test in path {}".format(str(subpath)))
+    loader = unittest.TestLoader()
+    suite = unittest.TestSuite()
+    tests = loader.discover(str(subpath), top_level_dir=str(basepath))
+    suite.addTests(tests)
+    suite.run(result)
+    removeModulesFromSysWhichContain(subpath.name)
 
-    for subpath in filter(lambda f: f.is_dir(), basepath.iterdir()):
-        if not subpath.joinpath('__init__.py').is_file():
-            continue
-        loader = unittest.TestLoader()
-        suite = unittest.TestSuite()
-        tests = loader.discover(str(subpath), top_level_dir=str(basepath))
-        suite.addTests(tests)
-        suite.run(result)
-        removeModulesFromSysWhichContain(subpath.name)
+    sys.stdout = stdout
+    sys.stderr = stderr
+
+    return result.result
+
+
+import time
+import copy
+
+
+
+def runTest(basepath, compressedReport):
+    pathlist = list(filter(lambda f: f.is_dir() and f.joinpath('__init__.py').is_file(), basepath.iterdir()))
+
+    resultObjects = []
+    with mp.Pool() as p:
+        for path in pathlist:
+            def f(r, name=path):
+                pathlist.remove(name)
+                name = name.relative_to(basepath)
+                log.info("[{}] DONE".format(name, r))
+            def fe(r, name=path):
+                pathlist.remove(name)
+                name = name.relative_to(basepath)
+                log.error("[{}] {}".format(name, r))
+
+            ro = p.apply_async(RunTestDirInThread, args=(basepath, path), callback=f, error_callback=fe)
+            resultObjects.append(ro)
+
+        start = time.time()
+        TIMEOUT_SEC = 10
+        msgcounter = TIMEOUT_SEC * 10
+        while(1):
+            msgcounter -= 1
+            if msgcounter%10 == 0:
+                log.info("Timeout in {:.0f}s".format(msgcounter // 10))
+
+            ready = [x.ready() for x in resultObjects]
+            if all(ready) or msgcounter <= 0:
+                break
+
+            log.info(None)
+            time.sleep(0.1)
+
+        for path in pathlist:
+            log.error("Timeout for {}".format(path.relative_to(basepath)))
+
+        result = TabularTestResult()
+        for ro in resultObjects:
+            if ro.ready():
+                result.result += ro.get()
 
     if compressedReport:
         return result.toCompressedHtmlTable()
     else:
         return result.toHtmlTable()
+
+
+
+
 
 def removeModulesFromSysWhichContain(pathfragment):
     keyToRemove = list()
@@ -143,7 +208,6 @@ def removeModulesFromSysWhichContain(pathfragment):
 
     for key in keyToRemove:
         del sys.modules[key]
-
 
 
 if __name__ == '__main__':

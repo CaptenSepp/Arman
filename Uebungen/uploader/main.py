@@ -162,17 +162,21 @@ class App(QFrame):
         import autotester
         autotester.log.addHandler(h)
 
-
         log.info("Führe für alle Aufgaben die Tests aus:")
 
         modules = sys.modules.copy()
         basepath = Path(__file__).parent.joinpath('..')
+
+        self.pb_Test.setEnabled(False)
         try:
             html = autotester.runTest(basepath, compressedReport = self.cb_SelectCompressedReport.isChecked(),
                                       processGuiEvents=QApplication.processEvents)
         except Exception as e:
             log.error("Fehler beim Ausführen der Tests: {}".format(str(e)))
             return
+
+        finally:
+            self.pb_Test.setEnabled(True)
 
         newmodules = sys.modules.copy()
 
@@ -215,11 +219,14 @@ class App(QFrame):
             log.error(str(e))
             return
 
+        self.pb_Abgabe.setEnabled(False)
         try:
             self.sendzipfile(akennung, uid, basedirectory, filename)
         except Exception as e:
             log.error(str(e))
             return
+        finally:
+            self.pb_Abgabe.setEnabled(True)
 
     def sendzipfile(self, akennung, uid, basedirectory, filename):
         log.info("Starte Übertragung der Datei {}".format(filename))

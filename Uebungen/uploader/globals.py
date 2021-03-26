@@ -1,2 +1,2 @@
 uploadurl = 'http://heinrich.mt.haw-hamburg.de/upload/prg1/'
-versionstr = '1.5'
+versionstr = '1.7'

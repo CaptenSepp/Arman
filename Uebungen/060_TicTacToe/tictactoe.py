@@ -21,8 +21,24 @@ def createEmptyPlayground():
     Returns
     -------
     Liste mit 9 Einträgen
-
+    *************************************************************************************************************************
+    inja mige ye array besaz (list) ke 9 ta khune dashte bashe (albate jolo tar mige bayad 3*3 bashe benazaram) 
+    baad bayad return beshe
     """
+    print("\n")
+    print("\t     |     |")
+    print("\t  {}  |  {}  |  {}".format(values[0], values[1], values[2]))
+    print('\t_____|_____|_____')
+ 
+    print("\t     |     |")
+    print("\t  {}  |  {}  |  {}".format(values[3], values[4], values[5]))
+    print('\t_____|_____|_____')
+ 
+    print("\t     |     |")
+ 
+    print("\t  {}  |  {}  |  {}".format(values[6], values[7], values[8]))
+    print("\t     |     |")
+    print("\n")
     
     return []  # Diese Zeile bitte entfernen
 #
@@ -57,8 +73,20 @@ def setField(x, y, token, playground):
     -------
     True, wenn Spielstein gesetzt wurde
     False, wenn Spielstein aufgrund eines besetzten Feldes nicht gesetzt wurde
-
+    *************************************************************************************************************************
+    int x: 0,1,2 mishe
+    int y: 0,1,2 mishe
+    ye stringam ke mishe x ya o ke bayad ehtemalan jaye khune habeshe
+    hamun bazie dooze khodemune
+    ye "playground" ham hast behesh mige (data structure), ino nemidunam chiye, miduni?
+    
     """
+    
+    # Represents the Tic Tac Toe
+    values = [' ' for x in range(9)]
+     
+    # Stores the positions occupied by X and O
+    player_pos = {'X':[], 'O':[]}
     
     return False  # Diese Zeile bitte entfernen
 #
@@ -89,7 +117,10 @@ def getField(x, y, playground):
     Returns
     -------
     'x', 'o', ' '
-
+    *************************************************************************************************************************
+    injam ke getter wase hanun dade hast, ke ehtemalan bayad bege ke in khune pore ya mishe chizi jash gozasht
+    ke return mikone "x" , "o", " " ke yani jaye khali
+    playgroun ham return nemikone faghat estefade mikone
     """
 
     return ' '  # Diese Zeile bitte entfernen
@@ -112,6 +143,7 @@ def drawCross(centerx, centery, width, height, painter):
     :param height:  Höhe des Rechtecks (float)
     :param painter: Painter-Objekt
     :return: None
+    *************************************************************************************************************************
     """
 
     #Zum Zeichnen einer Linie verwenden Sie bitte

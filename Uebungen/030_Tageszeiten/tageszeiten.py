@@ -22,16 +22,14 @@ def tageszeit(uhrzeit):
     String mit der Tageszeit (siehe oben)
 
     """
-    
-#
-#
-#               HIER KOMMT IHRE LÖSUNG
-#
-#
-    
-    
+    splited_uhrzeit = uhrzeit.split(":")
+    hhmm = int(splited_uhrzeit[0] + splited_uhrzeit[1])
+    if 2200 < hhmm < 2359 or 0000 <= hhmm < 500:
+        return "Nacht"
+    return "Nicht Nacht"
+
+
 if __name__ == '__main__':
     print(tageszeit("03:06"))
     print(tageszeit("13:32"))
     print(tageszeit("22:06"))
-    

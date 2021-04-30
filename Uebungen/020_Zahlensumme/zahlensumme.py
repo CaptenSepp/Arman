@@ -1,6 +1,26 @@
 # -*- coding: utf-8 -*-
 
 import math
+import re
+
+
+def element_is_not_float(param):
+    try:
+        float(param)
+        return False
+    except ValueError:
+        return True
+
+
+def remove_string_from_list(list):
+    i = 0
+    while i < len(list):
+        if element_is_not_float(list[i]):
+            list.pop(i)
+            continue
+        i += 1
+    return list
+
 
 def berechnung(zahlenstring):
     '''
@@ -15,13 +35,11 @@ def berechnung(zahlenstring):
     float oder int mit der Summe der Zahlen
 
     '''
-    
-    return 0  # Diese Zeile bitte entfernen
-#
-#
-#               HIER KOMMT IHRE LÖSUNG
-#
-#
+
+    list = re.split(r'[,\s+\']', zahlenstring)
+    list = remove_string_from_list(list)
+    result = sum(map(float, list))
+    return result
 
 
 #######################################
@@ -30,4 +48,5 @@ def berechnung(zahlenstring):
 
 if __name__ == '__main__':
     import gui
+
     gui.run(berechnung)

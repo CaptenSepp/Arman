@@ -20,14 +20,16 @@ def fizzbuzzNumber(number):
     'FizzBuzz', wenn number durch 3 und 5 teilbar
     Sonst die Zahl selber als String
     """
-    
-    return 0  # Diese Zeile bitte entfernen
-#
-#
-#               HIER KOMMT IHRE LÖSUNG
-#
-#
-    
+
+    if number % 3 == 0 and number % 5 == 0:
+        return "FizzBuzz"
+    elif number % 3 == 0:
+        return "Fizz"
+    elif number % 5 == 0:
+        return "Buzz"
+    return str(number)
+
+
 def run():
     '''
     Für alle Zahlen von 1-100 wird die jeweilige Ausgabe unter
@@ -39,19 +41,24 @@ def run():
     Trennung erfolgt mit Komma und Leerzeichen: "1, 2, Fizz, 4"
     Nach der letzten Zeile erfolgt ein Zeilenumbruch.
     '''
-    
-    return ''  # Diese Zeile bitte entfernen
-#
-#
-#               HIER KOMMT IHRE LÖSUNG
-#
-#
 
-    
-    
+    result = ""
+    j = 0
+    for i in range(1, 101):
+        j += 1
+        if j == 10:
+            result += str(fizzbuzzNumber(i)) + "\n"
+            j = 0
+            continue
+        result += str(fizzbuzzNumber(i)) + ", "
+    return result
+
+
 if __name__ == '__main__':
-    print( run() )
-    
+    run()
 
-        
-        
+
+
+
+
+

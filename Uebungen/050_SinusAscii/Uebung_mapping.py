@@ -30,10 +30,3 @@ def mapping(coordinate, src_minmax, dest_minmax):
 
     """
     
-    return 0  # Diese Zeile bitte entfernen
-#
-#
-#               HIER KOMMT IHRE LÖSUNG
-#
-#
-

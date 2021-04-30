@@ -32,12 +32,24 @@ def tageszeit(uhrzeit):
     String mit der Tageszeit (siehe oben)
 
     """
-
-#
-#
-#               HIER KOMMT IHRE LÖSUNG
-#
-#
+    uhrzeit = uhrzeit.replace(":", "")
+    if len(uhrzeit)!=4:
+        raise ValueError
+    uhrzeit=int(uhrzeit)
+    # if len(uhrzeit)!=4:
+    #     raise ValueError
+    if not 0<=uhrzeit<=2359:
+        raise ValueError
+    if 0 <= uhrzeit < 500 or 2230 <= uhrzeit <= 2359:
+        return ("Nacht")
+    elif 500 <= uhrzeit <= 1059:
+        return ("Morgen")
+    elif 1100 <= uhrzeit <= 1259:
+        return ("Mittag")
+    elif 1300 <= uhrzeit <= 1659:
+        return ("Nachmittag")
+    elif 1700 <= uhrzeit <= 2259:
+        return ("Abend")
 
 
 if __name__ == '__main__':

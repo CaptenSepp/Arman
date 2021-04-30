@@ -7,7 +7,6 @@ Created on Thu Mar  5 11:20:23 2020
 
 from itertools import product
 
-
 def createEmptyPlayground():
     """
     Die Funktion erstellt die Repräsentation eines leeren Spielfeldes mit
@@ -22,17 +21,15 @@ def createEmptyPlayground():
     Returns
     -------
     Liste mit 9 Einträgen
-    *************************************************************************************************************************
-    inja mige ye array besaz (list) ke 9 ta khune dashte bashe (albate jolo tar mige bayad 3*3 bashe benazaram) 
-    baad bayad return beshe
+
     """
-    values = [["", "", ""], ["", "", ""], ["", "", ""]]
-    for i in range(len(values)):
-        print("{} \t|{}\t|{}".format(values[i][0], values[i][1], values[i][2]))
-        if i < 2:
-            print("--------------")
-    print("\n")
-    return values  # Diese Zeile bitte entfernen
+    
+    return []  # Diese Zeile bitte entfernen
+#
+#
+#               HIER KOMMT IHRE LÖSUNG
+#
+#
 
 
 def setField(x, y, token, playground):
@@ -60,24 +57,15 @@ def setField(x, y, token, playground):
     -------
     True, wenn Spielstein gesetzt wurde
     False, wenn Spielstein aufgrund eines besetzten Feldes nicht gesetzt wurde
-    *************************************************************************************************************************
-    int x: 0,1,2 mishe
-    int y: 0,1,2 mishe
-    ye stringam ke mishe x ya o ke bayad ehtemalan jaye khune habeshe
-    hamun bazie dooze khodemune
-    ye "playground" ham hast behesh mige (data structure), ino nemidunam chiye, miduni?
-    
-    """
-    if playground[x][y] == "":
-        playground[x][y] = token
-        return True
-    else:
-        return False
-    # Represents the Tic Tac Toe
-    # values = [' ' for x in range(9)]
 
-    # Stores the positions occupied by X and O
-    # player_pos = {'X': [], 'O': []}
+    """
+    
+    return False  # Diese Zeile bitte entfernen
+#
+#
+#               HIER KOMMT IHRE LÖSUNG
+#
+#
 
 
 def getField(x, y, playground):
@@ -101,15 +89,10 @@ def getField(x, y, playground):
     Returns
     -------
     'x', 'o', ' '
-    *************************************************************************************************************************
-    injam ke getter wase hanun dade hast, ke ehtemalan bayad bege ke in khune pore ya mishe chizi jash gozasht
-    ke return mikone "x" , "o", " " ke yani jaye khali
-    playgroun ham return nemikone faghat estefade mikone
+
     """
-    return playground[x][y]
-    # return ' '  # Diese Zeile bitte entfernen
 
-
+    return ' '  # Diese Zeile bitte entfernen
 #
 #
 #               HIER KOMMT IHRE LÖSUNG
@@ -129,16 +112,18 @@ def drawCross(centerx, centery, width, height, painter):
     :param height:  Höhe des Rechtecks (float)
     :param painter: Painter-Objekt
     :return: None
-    *************************************************************************************************************************
     """
 
-    # Zum Zeichnen einer Linie verwenden Sie bitte
-    # painter.drawLine(x1, y1, x2, y2).
-    painter.drawLine(centerx - width, centery + height, centerx + width, centery - height)
-    painter.drawLine(centerx + width, centery - height, centerx + width, centery - height)
-    # Dies Zeichnet eine Linie zwischen den Punkten (x1,y1) und (x2,y2).
-    # Die Koordinaten müssen vom Typ Integer sein.
+    #Zum Zeichnen einer Linie verwenden Sie bitte
+    #painter.drawLine(x1, y1, x2, y2).
+    #Dies Zeichnet eine Linie zwischen den Punkten (x1,y1) und (x2,y2).
+    #Die Koordinaten müssen vom Typ Integer sein.
 
+#
+#
+#               HIER KOMMT IHRE LÖSUNG
+#
+#
 
 def drawCircle(centerx, centery, width, height, painter):
     """
@@ -153,10 +138,18 @@ def drawCircle(centerx, centery, width, height, painter):
     :param painter: Painter-Objekt
     :return: None
     """
-    painter.drawEllipse(centerx, centery, width, height)
+
     # Zum Zeichnen einer Ellipse verwenden Sie bitte
     # painter.drawEllipse(x, y, w, h)
     # Dies zeichnet eine Ellipse in das Rechteck (x,y) - (x+w, y+h)
+
+#
+#
+#               HIER KOMMT IHRE LÖSUNG
+#
+#
+    
+
 
 
 def drawEmptyPlayground(width, height, painter):
@@ -177,12 +170,6 @@ def drawEmptyPlayground(width, height, painter):
     :param painter: Painter-Objekt
     :return: None
     """
-    painter.drawLine(width / 3, height, width / 3, 0)
-    painter.drawLine(2 * width / 3, height, 2 * width / 3, 0)
-    painter.drawLine(width, height / 3, 0, height / 3)
-    painter.drawLine(width, 2 * height / 3, 0, 2 * height / 3)
-
-
 #
 #
 #               HIER KOMMT IHRE LÖSUNG
@@ -210,13 +197,11 @@ def drawToken(token, centerx, centery, token_width, token_height, painter, windo
     :param window:  Winows Objekt (Hier sind z. B. die Stiftfarben gespeichert)
     :return: None
     """
-    if token == "x":
-        painter.setPen(window.redPen)
-        drawCross(centerx, centery, token_width, token_height)
-    elif token == "o":
-        painter.setPen(window.greenPen)
-        drawCircle(centerx, centery, token_width, token_height)
-    return None
+#
+#
+#               HIER KOMMT IHRE LÖSUNG
+#
+#
 
 
 def repaint(width, height, painter, window):
@@ -242,19 +227,11 @@ def repaint(width, height, painter, window):
     :return:
     """
 
-
 #
 #
 #               HIER KOMMT IHRE LÖSUNG
 #
 #
-def are_all_cells_filled(field):
-    for i in len(field):
-        for j in len(field[i]):
-            if field[i][j] == "":
-                return False
-    return True
-
 
 def unentschieden(field):
     '''
@@ -266,46 +243,12 @@ def unentschieden(field):
         False: Nicht unentschieden
     '''
 
-    if not are_all_cells_filled(field):
-        return True
-    return False
-
-
-def is_winner(field, token):
-    #  check 3 token in one row
-    for row in len(field):
-        winner = True
-        for column in len(field[row]):
-            if field[row][column] != token:
-                winner = False
-        if winner:
-            return True, token
-
-    #  check 3 token in one column
-    for column in len(field[0]):
-        winner = True
-        for row in len(field):
-            if field[row][column] != token:
-                winner = False
-        if winner:
-            return True, token
-
-    #  check 3 token in diagonal
-    winner = True
-    for i in len(field):
-        if field[i][i] != token:
-            winner = False
-    if winner:
-        return True, token
-
-    #  check 3 token in sub-diagonal
-    winner = True
-    for i in len(field):
-        if field[len(field) - i - 1][i]:
-            winner = False
-    if winner:
-        return True, token
-
+    return False  # Diese Zeile bitte entfernen
+#
+#
+#               HIER KOMMT IHRE LÖSUNG
+#
+#
 
 def gewinner(field):
     '''
@@ -317,14 +260,12 @@ def gewinner(field):
         'o': O hat gewonnen
         None: niemand hat gewonnen
     '''
-    player_x_is_winner, player_x = is_winner(field, "x")
-    player_o_is_winner, player_o = is_winner(field, "o")
-    if player_x_is_winner:
-        return player_x
-    elif player_o_is_winner:
-        return player_o
-    return None
 
+#
+#
+#               HIER KOMMT IHRE LÖSUNG
+#
+#
 
 def mapMouseToField(mousex, mousey, width, height):
     '''
@@ -337,21 +278,12 @@ def mapMouseToField(mousex, mousey, width, height):
     :param height:  Höhe des gesamten Spielfeldes
     :return: ix, iy als integer
     '''
-    ix = iy = 0
-    if mousex < width / 3:
-        ix = 0
-    elif width / 3 < mousex < 2 * width / 3:
-        ix = 1
-    elif 2 * width / 3 < mousex:
-        ix = 2
-    if mousey < height / 3:
-        iy = 0
-    elif height / 3 < mousey < 2 * height / 3:
-        iy = 1
-    elif 2 * height / 3 < mousey:
-        iy = 2
-    return ix, iy
-
+    return 0, 0  # Diese Zeile bitte entfernen
+#
+#
+#               HIER KOMMT IHRE LÖSUNG
+#
+#
 
 #########################################################
 #########################################################
@@ -365,7 +297,6 @@ Spielfeld = None
 tokens = "xo"
 current = 0
 
-
 def init(window):
     global Spielfeld
     global current
@@ -378,8 +309,8 @@ def init(window):
 def mouseclick(x, y, width, height, window):
     global current
 
-    # if gewinner(Spielfeld):
-    #     return
+    if gewinner(Spielfeld):
+        return
 
     ix, iy = mapMouseToField(x, y, width, height)
     ok = setField(ix, iy, tokens[current], Spielfeld)
@@ -400,8 +331,36 @@ def mouseclick(x, y, width, height, window):
 
 if __name__ == '__main__':
     import sys, os
-
     sys.path.insert(0, os.path.dirname(__file__))
     import gui
-
-    gui.run(callback_repaint=repaint, callback_init=init, callback_mouseclick=mouseclick)
+    
+    gui.run(callback_repaint = repaint, callback_init = init, callback_mouseclick = mouseclick)
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    

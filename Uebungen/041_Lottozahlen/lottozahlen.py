@@ -2,6 +2,7 @@
 """
 Created on Wed Mar  4 09:59:27 2020
 """
+import random
 
 
 def get_input(text):
@@ -15,7 +16,9 @@ def get_input(text):
     Returns
     -------
     text-Input
+    **************************************************************************************************
     """
+
     return input(text)
 
 
@@ -30,13 +33,16 @@ def validate_input(number):
     Returns
     -------
     integer: if valid or bool: False if invalid input
+    **************************************************************************************************
     """
-    return 0  # Diese Zeile bitte entfernen
-#
-#
-#               HIER KOMMT IHRE LÖSUNG
-#
-#
+    try:
+        num = int(number)
+        if 0 < num < 50:
+            return num
+        else:
+            return False
+    except ValueError:
+        return False
 
 
 def get_draw():
@@ -46,13 +52,13 @@ def get_draw():
     Returns
     -------
     List: Liste mit 7 Zufallszahlen zwischen 1 und 49, wobei jede Zahl nur einmal in der Liste vorkommen darf
+    **************************************************************************************************
     """
-    return []  # Diese Zeile bitte entfernen
-#
-#
-#               HIER KOMMT IHRE LÖSUNG
-#
-#
+
+    zufallszahlen = set({})
+    while len(zufallszahlen) < 7:
+        zufallszahlen.add(random.randint(1, 49))
+    return list(zufallszahlen)
 
 
 def user_input():
@@ -67,13 +73,15 @@ def user_input():
     Returns
     -------
     list: Gibt eine Liste mit 7 Zahlen des Benutzers zurück
+    **************************************************************************************************
     """
-    return []  # Diese Zeile bitte entfernen
-#
-#
-#               HIER KOMMT IHRE LÖSUNG
-#
-#
+
+    user_input = set({})
+    while len(user_input) < 7:
+        input_number = validate_input(get_input("Bitte Zahlen eintippen!!"))
+        if input_number != False:
+            user_input.add(input_number)
+    return list(user_input)
 
 
 def check_numbers(numbers, tip):
@@ -83,13 +91,14 @@ def check_numbers(numbers, tip):
     Returns
     -------
     List: Eine Liste mit den Übereinstimmungen aus der Ziehung und den getippten Zahlen
+    **************************************************************************************************
     '''
-    return 0  # Diese Zeile bitte entfernen
-#
-#
-#               HIER KOMMT IHRE LÖSUNG
-#
-#
+    Übereinstimmungen = []
+    for i in range(len(numbers)):
+        for j in range(len(tip)):
+            if numbers[i] == tip[j]:
+                Übereinstimmungen.append(numbers[i])
+    return Übereinstimmungen
 
 
 def run():
@@ -109,9 +118,12 @@ def run():
     numbers = get_draw()
     tip = user_input()
     result = check_numbers(numbers, tip)
-    text = "Es wurden folgende Zahlen gezogen:" + str(numbers) + "\nSie haben folgende Zahlen getippt:" + str(tip) + "\nSie haben " + str(len(result)) + " richtige."
-    return text
+    text = "Es wurden folgende Zahlen gezogen:" + str(numbers) + "\nSie haben folgende Zahlen getippt:" + str(
+        tip) + "\nSie haben " + str(len(result)) + " richtige."
+    return text, result
 
 
 if __name__ == '__main__':
-    print(run())
+    text, result = run()
+    print(text)
+    print(result)

@@ -29,4 +29,7 @@ def mapping(coordinate, src_minmax, dest_minmax):
     1D Koordinate im Zielkoordinatensystem
 
     """
-    
+
+    relation = (dest_minmax[1] - dest_minmax[0]) / (src_minmax[1] - src_minmax[0])
+    result_coordinate = (relation * (coordinate - src_minmax[0])) + dest_minmax[0]
+    return result_coordinate

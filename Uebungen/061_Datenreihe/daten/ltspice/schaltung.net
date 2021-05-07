@@ -1,0 +1,15 @@
+* C:\Users\torsten\Documents\Seafile\Arbeit_Lehre\_2021SS\prog1\repos\prog1_ws2020_private\Uebungen\061_Datenreihe\daten\ltspice\schaltung.asc
+Q1 out in 0 0 MYTRANS
+R1 N001 out 500
+Voffset N002 0 730m
+Ve in N002 SINE(0 1m 1k)
+VB N001 0 10
+.model NPN NPN
+.model PNP PNP
+.lib C:\Users\torsten\Documents\LTspiceXVII\lib\cmp\standard.bjt
+.MODEL MYTRANS NPN IS=7f VAF=80 BF=300
+.tran 0 10m 0 1u
+* Eingangsspannung
+* Ausgangsspannung
+.backanno
+.end

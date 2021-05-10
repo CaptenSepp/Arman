@@ -48,10 +48,9 @@ class testExtractData(unittest.TestCase):
 
 class testCalcAmplification(unittest.TestCase):
     def setUp(self) -> None:
-        t = np.linspace(0, 10e-3, 1000)
-        f = 1e3
-        self.Vin = list(2*np.sin(2*np.pi*f*t))
-        self.Vout = list(20*np.sin(2*np.pi*f*t)+30)
+        v = np.array([0, 0, -1, 1, 0, 0, -1, -1, 1, 1])
+        self.Vin = list(2*v)
+        self.Vout = list(20*v+30)
 
     def testCalc(self):
         raise NotImplementedError  # Diese Zeile bitte entfernen

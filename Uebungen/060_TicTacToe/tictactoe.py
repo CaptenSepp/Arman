@@ -12,72 +12,71 @@ def createEmptyPlayground():
     """
     Die Funktion erstellt die Repräsentation eines leeren Spielfeldes mit
     3x3 Feldern.
-    
+
     Die Felder werden als einzelne Strings mit dem Inhalt ' ' oder 'o' oder 'x'
     in einer Liste mit 9 Einträgen abgelegt. Die 9 Einträge ergeben
     sich aus dem zeilenweisen hintereinanderschreiben der Felder.
-    
-    
+
+
 
     Returns
     -------
     Liste mit 9 Einträgen
-    *************************************************************************************************************************
-    inja mige ye array besaz (list) ke 9 ta khune dashte bashe (albate jolo tar mige bayad 3*3 bashe benazaram) 
-    baad bayad return beshe
+
     """
-    values = [["", "", ""], ["", "", ""], ["", "", ""]]
-    for i in range(len(values)):
-        print("{} \t|{}\t|{}".format(values[i][0], values[i][1], values[i][2]))
-        if i < 2:
-            print("--------------")
-    print("\n")
-    return values  # Diese Zeile bitte entfernen
+
+    return [' '] * 9
 
 
 def setField(x, y, token, playground):
     """
-    Setzt an der Position x,y auf dem Spielfeld den 
+    Setzt an der Position x,y auf dem Spielfeld den
     Spielstein <token>, wenn das Feld frei ist.
-    
+
     Wenn die Position nicht innerhalb des Spielfeldes liegt, wird
     ein IndexError geworfen.
-    
+
     Wenn das Token nicht x oder o ist, dann wird ein ValueError geworfen.
 
     Parameters
     ----------
-    x : int 
+    x : int
         Position in X (0,1,2)
     y : int
         Position in Y (0,1,2)
     token : str
         Der Spielstein "x" oder "o"
-    playground : 
+    playground :
         Die Datenstruktur des Spielfeldes
 
     Returns
     -------
     True, wenn Spielstein gesetzt wurde
     False, wenn Spielstein aufgrund eines besetzten Feldes nicht gesetzt wurde
-    *************************************************************************************************************************
-    int x: 0,1,2 mishe
-    int y: 0,1,2 mishe
-    ye stringam ke mishe x ya o ke bayad ehtemalan jaye khune habeshe
-    hamun bazie dooze khodemune
-    ye "playground" ham hast behesh mige (data structure), ino nemidunam chiye, miduni?
-    
+
     """
-    if playground[x][y] == "":
-        playground[x][y] = token
+
+    # 0 1 2 3 4 5 6 7 8
+
+    # Y | 0 1 2 (X-Wert)
+    # -------------
+    # 0 | 0 1 2
+    # 1 | 3 4 5
+    # 2 | 6 7 8
+
+    if x not in [0, 1, 2] or y not in [0, 1, 2]:
+        raise IndexError("Y oder X außerhalb des gültigen Bereichs")
+
+    if token != 'x' and token != 'o':
+        raise ValueError("<token> muss ein 'x' oder 'o' sein.")
+
+    index = 3 * y + x
+
+    if playground[index] == ' ':
+        playground[index] = token
         return True
     else:
         return False
-    # Represents the Tic Tac Toe
-    # values = [' ' for x in range(9)]
-
-    # Stores the positions occupied by X and O
-    # player_pos = {'X': [], 'O': []}
 
 
 def getField(x, y, playground):
@@ -87,26 +86,29 @@ def getField(x, y, playground):
 
     Wenn die Position nicht innerhalb des Spielfeldes liegt, wird
     ein IndexError geworfen.
-    
+
 
     Parameters
     ----------
-    x : int 
+    x : int
         Position in X (0,1,2)
     y : int
         Position in Y (0,1,2)
-    playground : 
+    playground :
         Die Datenstruktur des Spielfeldes
 
     Returns
     -------
     'x', 'o', ' '
-    *************************************************************************************************************************
-    injam ke getter wase hanun dade hast, ke ehtemalan bayad bege ke in khune pore ya mishe chizi jash gozasht
-    ke return mikone "x" , "o", " " ke yani jaye khali
-    playgroun ham return nemikone faghat estefade mikone
+
     """
-    return playground[x][y]
+
+    if x not in [0, 1, 2] or y not in [0, 1, 2]:
+        raise IndexError("Y oder X außerhalb des gültigen Bereichs")
+
+    index = 3 * y + x
+
+    return playground[index]
 
 
 def drawCross(centerx, centery, width, height, painter):
@@ -121,15 +123,20 @@ def drawCross(centerx, centery, width, height, painter):
     :param height:  Höhe des Rechtecks (float)
     :param painter: Painter-Objekt
     :return: None
-    *************************************************************************************************************************
     """
 
     # Zum Zeichnen einer Linie verwenden Sie bitte
     # painter.drawLine(x1, y1, x2, y2).
-    painter.drawLine(centerx - width, centery + height, centerx + width, centery - height)
-    painter.drawLine(centerx + width, centery - height, centerx + width, centery - height)
     # Dies Zeichnet eine Linie zwischen den Punkten (x1,y1) und (x2,y2).
     # Die Koordinaten müssen vom Typ Integer sein.
+
+    # Links unten rechts unten
+    painter.drawLine(int(centerx - width / 2), int(centery + height / 2),
+                     int(centerx + width / 2), int(centery - height / 2))
+
+    # Links oben rechts oben
+    painter.drawLine(int(centerx - width / 2), int(centery - height / 2),
+                     int(centerx + width / 2), int(centery + height / 2))
 
 
 def drawCircle(centerx, centery, width, height, painter):
@@ -145,10 +152,15 @@ def drawCircle(centerx, centery, width, height, painter):
     :param painter: Painter-Objekt
     :return: None
     """
-    painter.drawEllipse(centerx, centery, width, height)
+
     # Zum Zeichnen einer Ellipse verwenden Sie bitte
     # painter.drawEllipse(x, y, w, h)
     # Dies zeichnet eine Ellipse in das Rechteck (x,y) - (x+w, y+h)
+
+    painter.drawEllipse(int(centerx - width / 2),
+                        int(centery - height / 2),
+                        int(width),
+                        int(height))
 
 
 def drawEmptyPlayground(width, height, painter):
@@ -169,10 +181,32 @@ def drawEmptyPlayground(width, height, painter):
     :param painter: Painter-Objekt
     :return: None
     """
-    painter.drawLine(width / 3, height, width / 3, 0)
-    painter.drawLine(2 * width / 3, height, 2 * width / 3, 0)
-    painter.drawLine(width, height / 3, 0, height / 3)
-    painter.drawLine(width, 2 * height / 3, 0, 2 * height / 3)
+
+    #   0123456
+    #   | | | |
+
+    #   0123456789
+    #   |  |  |  |
+
+    # #Vertikal
+    # for i in range(4):
+    #     fb = int( (width - 4)/3 )
+    #     x = i * (fb+1)
+    #     painter.drawLine(x, 0, x, height-1)
+    #
+    # #Horizontal
+    # for i in range(4):
+    #     fb = int( (height - 4)/3 )
+    #     y = i * (fb+1)
+    #     painter.drawLine(0, y, width-1, y)
+
+    for i in range(4):
+        y = int((height - 1) * i / 3)
+        painter.drawLine(0, y, width - 1, y)
+
+    for i in range(4):
+        x = int((width - 1) * i / 3)
+        painter.drawLine(x, 0, x, height - 1)
 
 
 def drawToken(token, centerx, centery, token_width, token_height, painter, window):
@@ -195,13 +229,17 @@ def drawToken(token, centerx, centery, token_width, token_height, painter, windo
     :param window:  Winows Objekt (Hier sind z. B. die Stiftfarben gespeichert)
     :return: None
     """
-    if token == "x":
+
+    if token == 'x':
         painter.setPen(window.redPen)
-        drawCross(centerx, centery, token_width, token_height)
-    elif token == "o":
+        drawCross(centerx, centery, token_width, token_height, painter)
+    elif token == 'o':
         painter.setPen(window.greenPen)
-        drawCircle(centerx, centery, token_width, token_height)
-    return None
+        drawCircle(centerx, centery, token_width, token_height, painter)
+    elif token == ' ':
+        pass
+    else:
+        raise ValueError()
 
 
 def repaint(width, height, painter, window):
@@ -227,13 +265,18 @@ def repaint(width, height, painter, window):
     :return:
     """
 
+    painter.setPen(window.thickBlackPen)
+    drawEmptyPlayground(width, height, painter)
 
-def are_all_cells_filled(field):
-    for i in len(field):
-        for j in len(field[i]):
-            if field[i][j] == "":
-                return False
-    return True
+    field_width = (width - 1) / 3
+    field_height = (height - 1) / 3
+
+    for ix in range(3):
+        for iy in range(3):
+            centerx = field_width * (ix + 0.5)
+            centery = field_height * (iy + 0.5)
+            token = getField(ix, iy, Spielfeld)
+            drawToken(token, centerx, centery, 0.6 * field_width, 0.6 * field_height, painter, window)
 
 
 def unentschieden(field):
@@ -246,45 +289,18 @@ def unentschieden(field):
         False: Nicht unentschieden
     '''
 
-    if not are_all_cells_filled(field):
+    for x in range(3):
+        for y in range(3):
+            token = getField(x, y, field)
+            if token == ' ':
+                return False
+
+    winner = gewinner(field)
+
+    if winner in ['x', 'o']:
+        return False
+    else:
         return True
-    return False
-
-
-def is_winner(field, token):
-    #  check 3 token in one row
-    for row in len(field):
-        winner = True
-        for column in len(field[row]):
-            if field[row][column] != token:
-                winner = False
-        if winner:
-            return True, token
-
-    #  check 3 token in one column
-    for column in len(field[0]):
-        winner = True
-        for row in len(field):
-            if field[row][column] != token:
-                winner = False
-        if winner:
-            return True, token
-
-    #  check 3 token in diagonal
-    winner = True
-    for i in len(field):
-        if field[i][i] != token:
-            winner = False
-    if winner:
-        return True, token
-
-    #  check 3 token in sub-diagonal
-    winner = True
-    for i in len(field):
-        if field[len(field) - i - 1][i]:
-            winner = False
-    if winner:
-        return True, token
 
 
 def gewinner(field):
@@ -297,13 +313,47 @@ def gewinner(field):
         'o': O hat gewonnen
         None: niemand hat gewonnen
     '''
-    player_x_is_winner, player_x = is_winner(field, "x")
-    player_o_is_winner, player_o = is_winner(field, "o")
-    if player_x_is_winner:
-        return player_x
-    elif player_o_is_winner:
-        return player_o
-    return None
+
+    def checkTokens(tokenlist):
+        '''
+        tokens: Liste mit drei Einträgen z. B. [' ', 'x', 'o']
+        return 'x', 'o', None
+        '''
+
+        tokens = ''.join(tokenlist)
+        if tokens == "xxx" or tokens == 'ooo':
+            return tokens[0]
+
+        return None
+
+    result = []
+    # Diagonale links oben, rechts unten
+    r = checkTokens([getField(i, i, field) for i in range(3)])
+    result.append(r)
+
+    # Diagonale links unten, rechts oben
+    r = checkTokens([getField(i, 2 - i, field) for i in range(3)])
+    result.append(r)
+
+    # Vertikal/Horizontal
+    for i in range(3):
+        r = checkTokens([getField(x=i, y=y, playground=field) for y in range(3)])
+        result.append(r)
+        r = checkTokens([getField(x=x, y=i, playground=field) for x in range(3)])
+        result.append(r)
+
+    if 'x' in result:
+        return 'x'
+    elif 'o' in result:
+        return 'o'
+    else:
+        return None
+
+    # Y | 0 1 2 (X-Wert)
+    # -------------
+    # 0 | 0 1 2
+    # 1 | 3 4 5
+    # 2 | 6 7 8
 
 
 def mapMouseToField(mousex, mousey, width, height):
@@ -317,26 +367,28 @@ def mapMouseToField(mousex, mousey, width, height):
     :param height:  Höhe des gesamten Spielfeldes
     :return: ix, iy als integer
     '''
-    ix = iy = 0
-    if mousex < width / 3:
-        ix = 0
-    elif width / 3 < mousex < 2 * width / 3:
-        ix = 1
-    elif 2 * width / 3 < mousex:
-        ix = 2
-    if mousey < height / 3:
-        iy = 0
-    elif height / 3 < mousey < 2 * height / 3:
-        iy = 1
-    elif 2 * height / 3 < mousey:
-        iy = 2
-    return ix, iy
+
+    fieldwidth_x = (width / 3)
+    fieldwidth_y = (height / 3)
+    ix = int(mousex / fieldwidth_x)
+    iy = int(mousey / fieldwidth_y)
+
+    return ix, iy  # Diese Zeile bitte entfernen
 
 
+#
+#
+#               HIER KOMMT IHRE LÖSUNG
+#
+#
+
+#########################################################
+#########################################################
 #########################################################
 #         AB HIER NICHTS MEHR ÄNDERN
 #########################################################
-
+#########################################################
+#########################################################
 
 Spielfeld = None
 tokens = "xo"
@@ -382,3 +434,31 @@ if __name__ == '__main__':
     import gui
 
     gui.run(callback_repaint=repaint, callback_init=init, callback_mouseclick=mouseclick)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -7,12 +7,17 @@ def readData(fn):
 #
 
 def extractData(datalines):
-    raise NotImplementedError  # Diese Zeile bitte entfernen
-#
-#
-#               HIER KOMMT IHRE LÖSUNG
-#
-#
+
+    print(datalines)
+    Vin, Vout = [], []
+
+    heading = datalines[0].split('\t')
+    VinIndex = heading.index('V(in')
+
+    for dl in datalines:
+        VinValue = dl.split('\t')[VinIndex]
+        Vin.append(float(VinValue))
+    return {}
 
 
 def calcAmplification(Vin, Vout):

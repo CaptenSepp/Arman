@@ -1,10 +1,7 @@
 def readData(fn):
-    raise NotImplementedError  # Diese Zeile bitte entfernen
-#
-#
-#               HIER KOMMT IHRE LÖSUNG
-#
-#
+    with open(fn) as fd:
+        result = fd.readlines()
+
 
 def extractData(datalines):
 

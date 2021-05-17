@@ -10,6 +10,7 @@ import tictactoe as DUT
 import unittest
 from unittest.mock import MagicMock
 from unittest.mock import call
+from unittest.mock import patch
 
 
 def Any(cls):
@@ -29,8 +30,8 @@ class testTicTacToe_Moves(unittest.TestCase):
         field = DUT.createEmptyPlayground()
         DUT.setField(0, 1, 'o', field)
         DUT.setField(2, 2, 'x', field)
-        self.assertEqual(field, [' ', ' ', ' ', 
-                                 'o', ' ', ' ', 
+        self.assertEqual(field, [' ', ' ', ' ',
+                                 'o', ' ', ' ',
                                  ' ', ' ', 'x'])
     def test_SetField_OutOfField(self):
         field = DUT.createEmptyPlayground()
@@ -110,6 +111,10 @@ class testTicTacToe_StateChecks(unittest.TestCase):
                       'o o',
                       'oxo'], field)
 
+        self.assertIsNone(DUT.gewinner(field))
+
+    def testNichtGewonnenLeeresSpielfeld(self):
+        field = DUT.createEmptyPlayground()
         self.assertIsNone(DUT.gewinner(field))
 
     def testGewonnenHor1(self):
@@ -217,35 +222,26 @@ class testGui(unittest.TestCase):
 
         DUT.drawEmptyPlayground, DUT.getField, DUT.drawToken = temp
 
+    @patch("tictactoe.drawCircle", MagicMock())
+    @patch("tictactoe.drawCross", MagicMock())
     def test_drawtokenX(self):
         painter = MagicMock()
         window = MagicMock()
-        temp_circle = DUT.drawCircle
-        temp_cross = DUT.drawCross
-        DUT.drawCircle = MagicMock()
-        DUT.drawCross = MagicMock()
 
         DUT.drawToken('x', 100, 200, 30, 20, painter, window)
         DUT.drawCross.assert_called_with(100, 200, 30, 20, Any(object))
         painter.setPen.assert_called_with( window.redPen )
 
-        DUT.drawCircle = temp_circle
-        DUT.drawCross = temp_cross
-
+    @patch("tictactoe.drawCircle", MagicMock())
+    @patch("tictactoe.drawCross", MagicMock())
     def test_drawtokenO(self):
         painter = MagicMock()
         window = MagicMock()
-        temp_circle = DUT.drawCircle
-        temp_cross = DUT.drawCross
-        DUT.drawCircle = MagicMock()
-        DUT.drawCross = MagicMock()
 
         DUT.drawToken('o', 100, 200, 30, 20, painter, window)
         DUT.drawCircle.assert_called_with(100, 200, 30, 20, Any(object))
         painter.setPen.assert_called_with( window.greenPen )
 
-        DUT.drawCircle = temp_circle
-        DUT.drawCross = temp_cross
 
     def test_drawtokenWrongToken(self):
         painter = MagicMock()
@@ -294,17 +290,14 @@ class testGui(unittest.TestCase):
         ]
         painter.assert_has_calls(calls, any_order=True)
 
+    @patch("tictactoe.setField", MagicMock())
     def test_mouseClick(self):
-        backup = DUT.setField
-        DUT.setField = MagicMock()
-
         DUT.mouseclick(0, 0, 300, 600, self.window)
         DUT.setField.assert_called_with(0, 0, 'x', Any(list) )
 
         DUT.mouseclick(100, 50, 300, 600, self.window)
         DUT.setField.assert_called_with(1, 0, 'o', Any(list) )
 
-        DUT.setField = backup
 
     def testDrawCross(self):
         painter = MagicMock()

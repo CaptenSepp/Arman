@@ -20,5 +20,11 @@ class Test(unittest.TestCase):
         self.assertAlmostEqual(berechnung("  "), 0)
         self.assertAlmostEqual(berechnung(" 5, -13 "), -8)
 
+    def test_singlevalue(self):
+        self.assertAlmostEqual(berechnung("20"), 20)
+
+    def test_valuelistwithemptyentry(self):
+        self.assertAlmostEqual(berechnung("20,,3"), 23)
+
 if __name__ == '__main__':
     unittest.main()

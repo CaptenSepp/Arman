@@ -5,17 +5,15 @@ class Line:
     """
     Diese Klasse gepräsentiert das geometrische Objekt Line mit Startpunkt (p1) und Endpunkt (p2).
     """
+
     def __init__(self, p1xy, p2xy):
         """
         Konstruktor für das Line-Objekt.
         :param p1xy: Startpunkt als Tuple (x, y)
         :param p2xy: Endpunkt als Tuple
         """
-#
-#
-#               HIER KOMMT IHRE LÖSUNG
-#
-#
+        self.p1 = np.array(p1xy)
+        self.p2 = np.array(p2xy)
 
     def getEdges(self):
         """
@@ -23,12 +21,7 @@ class Line:
         :return: p1,p2
         """
 
-        return 0, 0  # Diese Zeile bitte entfernen
-#
-#
-#               HIER KOMMT IHRE LÖSUNG
-#
-#
+        return self.p1, self.p2
 
     def length(self):
         """
@@ -36,12 +29,12 @@ class Line:
 
         :return: Länge der Linie
         """
-        return 0  # Diese Zeile bitte entfernen
-#
-#
-#               HIER KOMMT IHRE LÖSUNG
-#
-#
+
+        ak = self.p2[0] - self.p1[0]
+        gk = self.p2[1] - self.p1[1]
+        length = np.sqrt(ak ** 2 + gk ** 2)
+
+        return length
 
     def angle(self):
         """
@@ -61,13 +54,22 @@ class Line:
         :return: Winkel in Grad von 0 bis 359.999999...
         """
 
-        return 0  # Diese Zeile bitte entfernen
-#
-#
-#               HIER KOMMT IHRE LÖSUNG
-#
-#
+        # delta = self.p2 - self.p1
+        # dx, dy = delta
+        # angle = np.arctan2(dy, dx) * 180 / np.pi
+        # angle = (angle + 360) % 360
 
+        p1x, p1y = self.p1
+        p2x, p2y = self.p2
+        length = self.length()
+        if p2y >= p1y:
+            cos = (p1x - p2x) / length
+            winkel = 180 - 180 / np.pi * np.arccos(cos)
+        else:
+            cos = (p2x - p1x) / length
+            winkel = 360 - 180 / np.pi * np.arccos(cos)
+
+        return winkel
 
     def rotate(self, phi):
         """
@@ -79,13 +81,30 @@ class Line:
         Hinweise hier:https://en.wikipedia.org/wiki/Rotation_matrix
         """
 
-        return Line((0, 0), (1, 1))  # Diese Zeile bitte entfernen
-#
-#
-#               HIER KOMMT IHRE LÖSUNG
-#
-#
+        phirad = phi * np.pi / 180
 
+        mat = np.array([
+            [np.cos(phirad), -np.sin(phirad)],
+            [np.sin(phirad), np.cos(phirad)]
+        ])
+
+        center = (self.p1 + self.p2) / 2
+
+        p1_neu = mat @ (self.p1 - center) + center
+        p2_neu = mat @ (self.p2 - center) + center
+
+        return Line(p1_neu, p2_neu)
+
+        p1x, p1y = self.p1
+        p2x, p2y = self.p2
+
+        p1x_neu = p1x * np.cos(phirad) - p1y * np.sin(phirad)
+        p1y_neu = p1x * np.sin(phirad) - p1y * np.cos(phirad)
+
+        p2x_neu = p2x * np.cos(phirad) - p2y * np.sin(phirad)
+        p2y_neu = p2x * np.sin(phirad) - p2y * np.cos(phirad)
+
+        return Line(p1x_neu, p1y_neu), (p2x_neu, p2y_neu)
 
     def __str__(self):
         """
@@ -102,6 +121,7 @@ class Line:
 if __name__ == '__main__':
     import matplotlib.pyplot as plt
 
+
     def plotline(ax, line, **argv):
         label = argv.get('label', '')
         label += '(Winkel = {:.1f})'.format(line.angle())
@@ -113,14 +133,15 @@ if __name__ == '__main__':
         ax.plot([p1x, p2x], [p1y, p2y], **argv)
         ax.plot([p1x], [p1y], marker='o', mfc='k', mec='k')
 
+
     ax = plt.gca()
 
-    l = Line( (20, 30), (20, 10) )
+    l = Line((20, 30), (20, 10))
     plotline(ax, l, lw=2, label='L1')
     plotline(ax, l.rotate(120), lw=2, label='L1')
     plotline(ax, l.rotate(240), lw=2, label='L1')
 
-    l = Line( (-20, 10), (-20, 30) )
+    l = Line((-20, 10), (-20, 30))
     plotline(ax, l, lw=2, label='L2')
     plotline(ax, l.rotate(120), lw=2, label='L2')
     plotline(ax, l.rotate(240), lw=2, label='L2')

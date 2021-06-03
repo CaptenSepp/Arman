@@ -28,25 +28,25 @@ def createPlot(ax):
     """
 
     phi1_deg = 0
-    phi2_deg = -35
+    phi2_deg = 35
     phi1 = phi1_deg / 180 * np.pi
     phi2 = phi2_deg / 180 * np.pi
     f = 2.63e6
     a = 0.5
     t = np.linspace(0, 1e-6, 200)
 
-    y1 = a * np.sin(2 * np.pi * f * t + phi1)
-    y2 = a * np.sin(2 * np.pi * f * t + phi2)
+    y1 = a * np.sin(2 * np.pi * f * t - phi1)
+    y2 = a * np.sin(2 * np.pi * f * t - phi2)
 
     ax.plot(t * 1e6, y1, color='k',
-            label='{:.2f} MHz mit 0° Phasenverschiebung'.format(f / 1e6, phi1_deg),
-            ls='-')
-    ax.plot(t * 1e6, y2, color='r',
-            label='{:.2f} MHz mit 0° Phasenverschiebung'.format(f / 1e6, phi2_deg),
-            ls='--')
+            label='{:.2f} MHz mit {:.0f}° Phasenverschiebung'.format(f / 1e6, phi1_deg),
+            ls='-', lw=2)
+    ax.plot(t * 1e6, y2, color='k',
+            label='{:.2f} MHz mit {:.0f}° Phasenverschiebung'.format(f / 1e6, phi2_deg),
+            ls='--', lw=1)
     ax.legend(loc='upper left')
     ax.grid()
-    ax.set.title('Zwei versetzt Sinussignale')
+    ax.set_title('Zwei versetzte Sinussignale')
     ax.set_ylim([-1.5, 2.0])
     ax.set_ylabel('Amplitude in mV')
     ax.set_xlabel('Zeit in us')

@@ -1,28 +1,22 @@
 class Konto:
-    def __init__(self, anfangswert = 0, zins = 0, dispogrenze = 0):
+    def __init__(self, anfangswert=0, zins=0, dispogrenze=0):
         """
         Erstellt ein Konto-Objekt
         :param anfangswert: Wert des Kontos bei Eröffnung
         :param zins:        Zinsatz des Kontos in Prozent
         :param dispogrenze: Maximaler Überziehungswert
         """
-#
-#
-#               HIER KOMMT IHRE LÖSUNG
-#
-#
+        self.anfangswert = anfangswert
+        self.zins = zins
+        self.dispogrenze = dispogrenze
+        self.kapital = anfangswert
 
     def stand(self):
         """
         Gibt des aktuellen Kapitalwert des Kontos zurück.
         :return: Kapitalwert
         """
-        return 0  # Diese Zeile bitte entfernen
-#
-#
-#               HIER KOMMT IHRE LÖSUNG
-#
-#
+        return self.kapital
 
     def einzahlung(self, wert):
         """
@@ -31,11 +25,9 @@ class Konto:
         :param wert: Einzahlungsbetrag
         :return: None
         """
-#
-#
-#               HIER KOMMT IHRE LÖSUNG
-#
-#
+        if wert < 0:
+            raise ValueError('Wert muss großer oder gleich Null sein')
+        self.kapital += wert
 
     def auszahlung(self, wert):
         """
@@ -46,12 +38,20 @@ class Konto:
         :param wert: Auswahlungswunsch
         :return: Wirklicher Auswahlungsbetrag
         """
-        return 0  # Diese Zeile bitte entfernen
-#
-#
-#               HIER KOMMT IHRE LÖSUNG
-#
-#
+
+        if wert < 0:
+            raise ValueError('Wert muss großer oder gleich Null sein')
+
+        neg_dispogrenze = -self.dispogrenze
+
+        neuerKontoStand = self.kapital - wert
+        if self.kapital < neg_dispogrenze:
+            wert = 0
+        elif neuerKontoStand < neg_dispogrenze:
+            wert = self.kapital - neg_dispogrenze
+
+        self.kapital -= wert
+        return wert
 
     def periodenAbschluss(self):
         """
@@ -60,11 +60,8 @@ class Konto:
         Periode auf dem Konto war.
         :return: None
         """
-#
-#
-#               HIER KOMMT IHRE LÖSUNG
-#
-#
+
+        self.kapital += self.kapital * self.zins * 100
 
     def sparPlan(self, K, N):
         """
@@ -77,8 +74,9 @@ class Konto:
         :return:
         """
 
-#
-#
-#               HIER KOMMT IHRE LÖSUNG
-#
-#
+        if N < 0:
+            raise ValueError()
+
+        for i in range(N):
+            self.einzahlung(K)
+            self.periodenAbschluss()

@@ -94,6 +94,7 @@ class testTaylorApproximation(unittest.TestCase):
         expected = r'$0.551(x-x_0)^{0} + 0.834(x-x_0)^{1} - 0.276(x-x_0)^{2} - 0.139(x-x_0)^{3}$'
         self.assertEqual(self.taylor.getLatex(), expected)
 
+
 class testPlotFunction(unittest.TestCase):
     def setUp(self):
         self.fig = plt.figure()

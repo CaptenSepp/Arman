@@ -83,7 +83,7 @@ class TaylorApproximation:
         '''
         result = []
         for n in range(self.N+1):
-            cn = self.fkt.evalDarivitive(n, self.x0) / np.math.factorial(n)
+            cn = self.fkt.evalDerivitive(n, self.x0) / np.math.factorial(n)
             result.append(cn)
 
         result.reverse()
@@ -125,13 +125,13 @@ class TaylorApproximation:
         '''
         c = self.calcTaylorCoefficients()
         c.reverse()
-        result = '$'
+        result = ''
         for k, c in enumerate(c):
             if len(result) > 0:
                 if c >= 0:
                     result += ' + '
                 else:
-                    c*=-1
+                    c *= -1
                     result += ' - '
             result += "{:.3f}(x-x_0)^{{{:d}}}".format(c, k)
         return '${}$'.format(result)
@@ -164,13 +164,14 @@ def plotFunction(ax, x0, N, functioname):
     y = fkt.evaluate(x)
     ytaylor = taylor.evaluate(x)
 
-    ax.plot(x, y, label=fkt.getLatex())
     ax.plot(x, ytaylor, label=taylor.getLatex())
+    ax.plot(x, y, label=fkt.getLatex())
+    ax.plot(x0, fkt.evaluate(x0), marker='o', label='$x_0$', mfc='r', mec='g')
+
+    ax.legend(loc = 'upper right', prop={'size': 6})
 
     margin = (y.max()-y.min())*.4
     ax.set_ylim([y.min()-margin, y.min()+margin])
-
-
 if __name__ == '__main__':
     import gui
     gui.run(plotFunction)

@@ -1,5 +1,6 @@
 import numpy as np
 
+
 class SineFunction:
     """
     Diese Klasse bildet repräsentiert eine Sinusfunktion.
@@ -7,6 +8,7 @@ class SineFunction:
     x0 mit evalDerivitive(n, x0) ausgewertet werden.
     Zudem ist es mögich eine textuelle Beschreibung für ein Plotlabel mit getLatex zu erhalten.
     """
+
     def __init__(self):
         pass
 
@@ -17,12 +19,16 @@ class SineFunction:
         :param x: Skalar oder numpy-Vektor
         :return: Wert(e) als Skalar oder numpy-Vektor
         '''
-        return 0  # Diese Zeile bitte entfernen
-#
-#
-#               HIER KOMMT IHRE LÖSUNG
-#
-#
+        y = (n % 4)
+        if   y == 0:
+            return np.sin(x)
+        elif y == 1:
+            return np.cos(x)
+        elif y == 2:
+            return -np.sin(x)
+        elif y == 3:
+            return -np.cos(x)
+        return
 
     def evaluate(self, x):
         '''
@@ -30,12 +36,7 @@ class SineFunction:
         :param x: Skalar oder Numpy-Vektor
         :return: Entsprechende Werte
         '''
-        return 0  # Diese Zeile bitte entfernen
-#
-#
-#               HIER KOMMT IHRE LÖSUNG
-#
-#
+        return np.sin(x)
 
     def getLatex(self):
         '''
@@ -45,26 +46,16 @@ class SineFunction:
         return "$sin(x)$"
 
 
-#Hier nochmal der selbe Klassentyp nur mit der Exponentialfunktion
+# Hier nochmal der selbe Klassentyp nur mit der Exponentialfunktion
 class ExpFunction:
     def __init__(self):
         pass
 
     def evalDerivitive(self, n, x):
-        return 0  # Diese Zeile bitte entfernen
-#
-#
-#               HIER KOMMT IHRE LÖSUNG
-#
-#
+        return np.exp(x)
 
     def evaluate(self, x):
-        return 0  # Diese Zeile bitte entfernen
-#
-#
-#               HIER KOMMT IHRE LÖSUNG
-#
-#
+        return self.evalDerivitive(0, x)
 
     def getLatex(self):
         return "$e^x$"
@@ -90,12 +81,13 @@ class TaylorApproximation:
         :return: List der Koeffizienten
         Zum Beispiel steht [2, 3, 1] für das Polynom p(x) = 2 + 3x + 1x^2
         '''
-        return 0  # Diese Zeile bitte entfernen
-#
-#
-#               HIER KOMMT IHRE LÖSUNG
-#
-#
+        result = []
+        for n in range(self.N+1):
+            cn = self.fkt.evalDarivitive(n, self.x0) / np.math.factorial(n)
+            result.append(cn)
+
+        result.reverse()
+        return result
 
     def getTaylorPolynom(self):
         '''
@@ -104,12 +96,9 @@ class TaylorApproximation:
 
         :return: Polynom vom typ np.poly1d
         '''
-        return [0]*4  # Diese Zeile bitte entfernen
-#
-#
-#               HIER KOMMT IHRE LÖSUNG
-#
-#
+
+        c = self.calcTaylorCoefficients()
+        return np.poly1d(c)
 
     def evaluate(self, x):
         '''
@@ -121,12 +110,8 @@ class TaylorApproximation:
         :param x: Skalar oder Vektor
         :return: Entsprechend approximierte Werte
         '''
-        return 0  # Diese Zeile bitte entfernen
-#
-#
-#               HIER KOMMT IHRE LÖSUNG
-#
-#
+        poly = self.getTaylorPolynom()
+        return poly(x-self.x0)
 
     def getLatex(self):
         '''
@@ -138,12 +123,18 @@ class TaylorApproximation:
 
         :return: String mit Latexdarstellung
         '''
-        return ''  # Diese Zeile bitte entfernen
-#
-#
-#               HIER KOMMT IHRE LÖSUNG
-#
-#
+        c = self.calcTaylorCoefficients()
+        c.reverse()
+        result = '$'
+        for k, c in enumerate(c):
+            if len(result) > 0:
+                if c >= 0:
+                    result += ' + '
+                else:
+                    c*=-1
+                    result += ' - '
+            result += "{:.3f}(x-x_0)^{{{:d}}}".format(c, k)
+        return '${}$'.format(result)
 
 def plotFunction(ax, x0, N, functioname):
     '''
@@ -160,17 +151,25 @@ def plotFunction(ax, x0, N, functioname):
     :param functioname: Entweder 'sin(x)' oder 'exp(x)'. Bei unbekannter Funktion wird ein ValueError geworfen.
     :return: None
     '''
+    # print("Aufruf mit", x0, N, functioname)
     if functioname == 'sin(x)':
         fkt = SineFunction()
     elif functioname == 'exp(x)':
         fkt = ExpFunction()
     else:
         raise ValueError()
-#
-#
-#               HIER KOMMT IHRE LÖSUNG
-#
-#
+
+    taylor = TaylorApproximation(fkt, N, x0)
+    x = np.linspace(-10, 10, 400)
+    y = fkt.evaluate(x)
+    ytaylor = taylor.evaluate(x)
+
+    ax.plot(x, y, label=fkt.getLatex())
+    ax.plot(x, ytaylor, label=taylor.getLatex())
+
+    margin = (y.max()-y.min())*.4
+    ax.set_ylim([y.min()-margin, y.min()+margin])
+
 
 if __name__ == '__main__':
     import gui

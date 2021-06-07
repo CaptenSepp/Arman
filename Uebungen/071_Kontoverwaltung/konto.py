@@ -61,7 +61,7 @@ class Konto:
         :return: None
         """
 
-        self.kapital += self.kapital * self.zins * 100
+        self.kapital += self.kapital * self.zins / 100 # todo in chichiye
 
     def sparPlan(self, K, N):
         """

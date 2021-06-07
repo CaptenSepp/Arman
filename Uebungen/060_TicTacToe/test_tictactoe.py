@@ -201,7 +201,7 @@ class testGui(unittest.TestCase):
         DUT.drawToken = MagicMock()
         DUT.repaint(width=28, height=46, painter=painter, window=window)
 
-#        print(DUT.drawToken.mock_calls)
+#       print(DUT.drawToken.mock_calls)
 
         DUT.drawEmptyPlayground.assert_called_with(28, 46, painter)
         painter.setPen.assert_called_with( window.thickBlackPen )

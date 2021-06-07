@@ -65,13 +65,11 @@ def setField(x, y, token, playground):
     # 2 | 6 7 8
 
     if x not in [0, 1, 2] or y not in [0, 1, 2]:
-        raise IndexError("Y oder X außerhalb des gültigen Bereichs")
-
-    if token != 'x' and token != 'o':
-        raise ValueError("<token> muss ein 'x' oder 'o' sein.")
+        raise IndexError("y oder x ausßerhalb des gültigen Bereichs")
+    if token not in ["x", "o"]:
+        raise ValueError("token ausßerhalb des gültigen Beträge")
 
     index = 3 * y + x
-
     if playground[index] == ' ':
         playground[index] = token
         return True
@@ -181,29 +179,9 @@ def drawEmptyPlayground(width, height, painter):
     :param painter: Painter-Objekt
     :return: None
     """
-
-    #   0123456
-    #   | | | |
-
-    #   0123456789
-    #   |  |  |  |
-
-    # #Vertikal
-    # for i in range(4):
-    #     fb = int( (width - 4)/3 )
-    #     x = i * (fb+1)
-    #     painter.drawLine(x, 0, x, height-1)
-    #
-    # #Horizontal
-    # for i in range(4):
-    #     fb = int( (height - 4)/3 )
-    #     y = i * (fb+1)
-    #     painter.drawLine(0, y, width-1, y)
-
     for i in range(4):
         y = int((height - 1) * i / 3)
         painter.drawLine(0, y, width - 1, y)
-
     for i in range(4):
         x = int((width - 1) * i / 3)
         painter.drawLine(x, 0, x, height - 1)
@@ -229,7 +207,6 @@ def drawToken(token, centerx, centery, token_width, token_height, painter, windo
     :param window:  Winows Objekt (Hier sind z. B. die Stiftfarben gespeichert)
     :return: None
     """
-
     if token == 'x':
         painter.setPen(window.redPen)
         drawCross(centerx, centery, token_width, token_height, painter)
@@ -270,7 +247,6 @@ def repaint(width, height, painter, window):
 
     field_width = (width - 1) / 3
     field_height = (height - 1) / 3
-
     for ix in range(3):
         for iy in range(3):
             centerx = field_width * (ix + 0.5)
@@ -327,15 +303,12 @@ def gewinner(field):
         return None
 
     result = []
-    # Diagonale links oben, rechts unten
     r = checkTokens([getField(i, i, field) for i in range(3)])
     result.append(r)
 
-    # Diagonale links unten, rechts oben
     r = checkTokens([getField(i, 2 - i, field) for i in range(3)])
     result.append(r)
 
-    # Vertikal/Horizontal
     for i in range(3):
         r = checkTokens([getField(x=i, y=y, playground=field) for y in range(3)])
         result.append(r)
@@ -348,12 +321,6 @@ def gewinner(field):
         return 'o'
     else:
         return None
-
-    # Y | 0 1 2 (X-Wert)
-    # -------------
-    # 0 | 0 1 2
-    # 1 | 3 4 5
-    # 2 | 6 7 8
 
 
 def mapMouseToField(mousex, mousey, width, height):
@@ -375,12 +342,6 @@ def mapMouseToField(mousex, mousey, width, height):
 
     return ix, iy  # Diese Zeile bitte entfernen
 
-
-#
-#
-#               HIER KOMMT IHRE LÖSUNG
-#
-#
 
 #########################################################
 #########################################################
@@ -426,7 +387,6 @@ def mouseclick(x, y, width, height, window):
         window.setStatus("unentschieden")
         return
 
-
 if __name__ == '__main__':
     import sys, os
 
@@ -434,31 +394,3 @@ if __name__ == '__main__':
     import gui
 
     gui.run(callback_repaint=repaint, callback_init=init, callback_mouseclick=mouseclick)
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

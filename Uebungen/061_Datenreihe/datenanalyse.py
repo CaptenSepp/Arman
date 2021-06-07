@@ -27,13 +27,14 @@ def calcAmplification(data):                                                    
 
     if len(data['Vin']) != len(data['Vout']):
         raise ValueError()
-
-
-    Vin = data['Vin']
-    Vin.sort()
-    VinMin = Vin[0]
-    VinMax = Vin[-1]
-    VinDiff = VinMax - VinMin
+    # Vin = data['Vin']
+    # Vin.sort()
+    # VinMin = Vin[0]
+    # VinMax = Vin[-1]
+    # VinDiff = VinMax - VinMin
+    VinMax = max(data['Vin'])
+    VinMin = min(data['Vin'])
+    VinDiff = VinMax-VinMin
 
     VoutMax = max(data['Vout'])
     VoutMin = min(data['Vout'])

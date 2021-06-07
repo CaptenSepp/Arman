@@ -20,7 +20,7 @@ class SineFunction:
         :return: Wert(e) als Skalar oder numpy-Vektor
         '''
         y = (n % 4)
-        if   y == 0:
+        if y == 0:
             return np.sin(x)
         elif y == 1:
             return np.cos(x)
@@ -44,7 +44,6 @@ class SineFunction:
         :return:
         '''
         return "$sin(x)$"
-
 
 # Hier nochmal der selbe Klassentyp nur mit der Exponentialfunktion
 class ExpFunction:
@@ -82,7 +81,7 @@ class TaylorApproximation:
         Zum Beispiel steht [2, 3, 1] für das Polynom p(x) = 2 + 3x + 1x^2
         '''
         result = []
-        for n in range(self.N+1):
+        for n in range(self.N + 1):
             cn = self.fkt.evalDerivitive(n, self.x0) / np.math.factorial(n)
             result.append(cn)
 
@@ -111,7 +110,7 @@ class TaylorApproximation:
         :return: Entsprechend approximierte Werte
         '''
         poly = self.getTaylorPolynom()
-        return poly(x-self.x0)
+        return poly(x - self.x0)
 
     def getLatex(self):
         '''
@@ -135,6 +134,7 @@ class TaylorApproximation:
                     result += ' - '
             result += "{:.3f}(x-x_0)^{{{:d}}}".format(c, k)
         return '${}$'.format(result)
+
 
 def plotFunction(ax, x0, N, functioname):
     '''
@@ -168,10 +168,13 @@ def plotFunction(ax, x0, N, functioname):
     ax.plot(x, y, label=fkt.getLatex())
     ax.plot(x0, fkt.evaluate(x0), marker='o', label='$x_0$', mfc='r', mec='g')
 
-    ax.legend(loc = 'upper right', prop={'size': 6})
+    ax.legend(loc='upper right', prop={'size': 6})
 
-    margin = (y.max()-y.min())*.4
-    ax.set_ylim([y.min()-margin, y.min()+margin])
+    margin = (y.max() - y.min()) * .4
+    ax.set_ylim([y.min() - margin, y.min() + margin])
+
+
 if __name__ == '__main__':
     import gui
+
     gui.run(plotFunction)

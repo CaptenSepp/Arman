@@ -42,9 +42,9 @@ class Konto:
         if wert < 0:
             raise ValueError('Wert muss großer oder gleich Null sein')
 
-        neg_dispogrenze = -self.dispogrenze
+        neg_dispogrenze = -self.dispogrenze  # marze hesab
 
-        neuerKontoStand = self.kapital - wert
+        neuerKontoStand = self.kapital - wert  # meghdar jadid = meghdare feeli - vajh
         if self.kapital < neg_dispogrenze:
             wert = 0
         elif neuerKontoStand < neg_dispogrenze:
@@ -74,7 +74,7 @@ class Konto:
         :return:
         """
 
-        if N < 0:
+        if N < 0: #todo inja dare chi mishe?
             raise ValueError()
 
         for i in range(N):

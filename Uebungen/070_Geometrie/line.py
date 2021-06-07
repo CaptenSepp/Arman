@@ -81,30 +81,30 @@ class Line:
         Hinweise hier:https://en.wikipedia.org/wiki/Rotation_matrix
         """
 
-        phirad = phi * np.pi / 180
+        phirad = phi * np.pi / 180  # ino dare be radian tabdil mikone
 
         mat = np.array([
             [np.cos(phirad), -np.sin(phirad)],
             [np.sin(phirad), np.cos(phirad)]
         ])
 
-        center = (self.p1 + self.p2) / 2
+        center = (self.p1 + self.p2) / 2  # markaze khato peyda mikone
 
-        p1_neu = mat @ (self.p1 - center) + center
+        p1_neu = mat @ (self.p1 - center) + center  # at-sign zarbe matrisi ro anjam mide (ya ".dot")
         p2_neu = mat @ (self.p2 - center) + center
 
         return Line(p1_neu, p2_neu)
 
-        p1x, p1y = self.p1
-        p2x, p2y = self.p2
-
-        p1x_neu = p1x * np.cos(phirad) - p1y * np.sin(phirad)
-        p1y_neu = p1x * np.sin(phirad) - p1y * np.cos(phirad)
-
-        p2x_neu = p2x * np.cos(phirad) - p2y * np.sin(phirad)
-        p2y_neu = p2x * np.sin(phirad) - p2y * np.cos(phirad)
-
-        return Line(p1x_neu, p1y_neu), (p2x_neu, p2y_neu)
+        # p1x, p1y = self.p1
+        # p2x, p2y = self.p2
+        #
+        # p1x_neu = p1x * np.cos(phirad) - p1y * np.sin(phirad)
+        # p1y_neu = p1x * np.sin(phirad) - p1y * np.cos(phirad)
+        #
+        # p2x_neu = p2x * np.cos(phirad) - p2y * np.sin(phirad)
+        # p2y_neu = p2x * np.sin(phirad) - p2y * np.cos(phirad)
+        #
+        # return Line(p1x_neu, p1y_neu), (p2x_neu, p2y_neu)
 
     def __str__(self):
         """
